@@ -192,6 +192,71 @@ body {
   animation: fadein 0.3s ease-out, fadeout 0.3s ease-in 1.7s forwards;
 }
 
+.auth-box {
+  width: 300px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.auth-btn {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.auth-btn:hover {
+  background: #0056b3;
+}
+
+.auth-switch {
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ff4b4b;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  transition: 0.2s;
+}
+
+.logout-button:hover {
+  background: #d93636;
+}
+
 /* Animaciones */
 @keyframes fadein {
   from { transform: translateY(20px); opacity: 0; }

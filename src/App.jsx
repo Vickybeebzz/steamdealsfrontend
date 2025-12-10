@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AuthForm from "./components/AuthForm";
 import "./styles.css";
 
 function App() {
@@ -12,6 +13,36 @@ function App() {
   const [notification, setNotification] = useState(null);
   const itemsPerPage = 16;
   const API_BASE = "https://steamdealsbackend.onrender.com";
+  const [isLogged, setIsLogged] = useState(
+  Boolean(localStorage.getItem("token"))
+);
+const [token, setToken] = useState(localStorage.getItem("token"));
+
+async function handleLoginSuccess() {
+  setToken(localStorage.getItem("token"))
+  setIsLogged(true);
+  await loadFavorites();
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  setIsLogged(false);
+  setToken(null);
+  setFavorites([]); // opcional
+  showNotification("👋 Sesión cerrada");
+}
+
+async function loadFavorites() {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  const res = await fetch(`${API_BASE}/favorites`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  const data = await res.json();
+  setFavorites(data);
+}
 
   function fetchDeals(page) {
     setLoading(true);
@@ -34,6 +65,7 @@ function App() {
     const saved = localStorage.getItem("favorites");
     if (saved) setFavorites(JSON.parse(saved));
   }, []);
+
   // cargar primera página
   useEffect(() => {
     fetchDeals(currentPage);
@@ -61,26 +93,56 @@ function App() {
 
   const displayDeals = showFavorites ? favorites : sortedDeals;
 
-  function toggleFavorite(game) {
-    setFavorites(prev => {
-      const exists = prev.find(f => f.dealURL === game.dealURL);
-
-      let updated;
-      if (exists) {
-        updated = prev.filter(f => f.dealURL !== game.dealURL);
-        showNotification(`❌ Quitado de favoritos: ${game.title}`);
-      } else {
-        updated = [...prev, game];
-        showNotification(`⭐ Añadido a favoritos: ${game.title}`);
-      }
-
-      localStorage.setItem("favorites", JSON.stringify(updated));
-      return updated;
-    });
+  async function toggleFavorite(game) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    showNotification("🔒 Debes iniciar sesión");
+    return;
   }
 
+  const exists = favorites.find(f => f.dealURL === game.dealURL);
+
+  if (exists) {
+    // DELETE
+    await fetch(`${API_BASE}/favorites/${exists._id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    setFavorites(prev => prev.filter(f => f._id !== exists._id));
+    showNotification(`❌ Quitado de favoritos: ${game.title}`);
+  } else {
+    // POST
+    const res = await fetch(`${API_BASE}/favorites`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(game)
+    });
+
+    const saved = await res.json();
+    setFavorites(prev => [...prev, saved]);
+    showNotification(`⭐ Añadido a favoritos: ${game.title}`);
+  }
+}
+
+
+    if (!isLogged) {
   return (
     <div className="app-container">
+      <AuthForm API_BASE={API_BASE} onLogin={handleLoginSuccess} />
+    </div>
+  );
+}
+  return (
+    <div className="app-container">
+      {token && (
+  <button className="logout-button" onClick={logout}>
+    🚪 Logout
+  </button>
+)}
       {notification && (
         <div className="toast">
           {notification}
