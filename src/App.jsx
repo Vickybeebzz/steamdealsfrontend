@@ -36,7 +36,7 @@ async function loadFavorites() {
   const token = localStorage.getItem("token");
   if (!token) return;
 
-  const res = await fetch(`${API_BASE}/favorites`, {
+  const res = await fetch(`${API_BASE}/favourites`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 
@@ -101,7 +101,7 @@ async function loadFavorites() {
   const exists = favorites.find(f => f.dealURL === game.dealURL);
 
   if (exists) {
-    await fetch(`${API_BASE}/favorites/${exists._id}`, {
+    await fetch(`${API_BASE}/favourites/${exists._id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -109,7 +109,7 @@ async function loadFavorites() {
     setFavorites(prev => prev.filter(f => f._id !== exists._id));
     showNotification(`❌ Quitado de favoritos: ${game.title}`);
   } else {
-    const res = await fetch(`${API_BASE}/favorites`, {
+    const res = await fetch(`${API_BASE}/favourites`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
