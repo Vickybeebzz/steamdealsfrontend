@@ -8,7 +8,7 @@ function App() {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [minDiscount, setMinDiscount] = useState(0);
-  const [sortBy, setSortBy] = useState("discount"); // "discount" o "price"
+  const [sortBy, setSortBy] = useState("discount");
   const [currentPage, setCurrentPage] = useState(0);
   const [notification, setNotification] = useState(null);
   const itemsPerPage = 16;
@@ -28,7 +28,7 @@ function logout() {
   localStorage.removeItem("token");
   setIsLogged(false);
   setToken(null);
-  setFavorites([]); // opcional
+  setFavorites([]); 
   showNotification("👋 Sesión cerrada");
 }
 
@@ -58,7 +58,7 @@ async function loadFavorites() {
 
   function showNotification(message) {
     setNotification(message);
-    setTimeout(() => setNotification(null), 2000); // desaparece en 2 segundos
+    setTimeout(() => setNotification(null), 2000);
   }
 
   useEffect(() => {
@@ -66,7 +66,6 @@ async function loadFavorites() {
     if (saved) setFavorites(JSON.parse(saved));
   }, []);
 
-  // cargar primera página
   useEffect(() => {
     fetchDeals(currentPage);
   }, [currentPage]);
@@ -81,12 +80,11 @@ async function loadFavorites() {
 
   const sortedDeals = [...filteredDeals].sort((a, b) => {
     if (sortBy === "discount") {
-      // Convertimos string "75%" -> número 75
       const discA = parseInt(a.discount.replace("%", ""));
       const discB = parseInt(b.discount.replace("%", ""));
-      return discB - discA; // mayor descuento primero
+      return discB - discA;
     } else if (sortBy === "price") {
-      return parseFloat(a.salePrice) - parseFloat(b.salePrice); // menor precio primero
+      return parseFloat(a.salePrice) - parseFloat(b.salePrice); 
     }
     return 0;
   });
@@ -103,7 +101,6 @@ async function loadFavorites() {
   const exists = favorites.find(f => f.dealURL === game.dealURL);
 
   if (exists) {
-    // DELETE
     await fetch(`${API_BASE}/favorites/${exists._id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
@@ -112,7 +109,6 @@ async function loadFavorites() {
     setFavorites(prev => prev.filter(f => f._id !== exists._id));
     showNotification(`❌ Quitado de favoritos: ${game.title}`);
   } else {
-    // POST
     const res = await fetch(`${API_BASE}/favorites`, {
       method: "POST",
       headers: {
@@ -215,7 +211,6 @@ async function loadFavorites() {
           ))}
       </div>
 
-      {/* Pagination */}
       {!showFavorites && (
       <div className="pagination">
         <button

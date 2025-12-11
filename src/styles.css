@@ -1,4 +1,3 @@
-/* === Layout general === */
 body {
   background: #f5f7fa;
   font-family: "Inter", Arial, sans-serif;
@@ -6,28 +5,24 @@ body {
   padding: 0;
 }
 
-/* Contenedor */
 .app-container {
   padding: 20px;
   min-height: 100vh;
   min-width: 90vw;
 }
 
-/* Título */
 .app-title {
   text-align: center;
   margin-bottom: 25px;
   color: #222;
 }
 
-/* Grid de juegos */
 .deals-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
 }
 
-/* Tarjeta */
 .deal-card {
   background: white;
   border-radius: 10px;
@@ -37,14 +32,12 @@ body {
   flex-direction: column;
 }
 
-/* Imagen */
 .deal-card img {
   width: 100%;
   border-radius: 6px;
   margin-bottom: 10px;
 }
 
-/* Título del juego */
 .deal-title {
   font-size: 16px;
   color: #333;
@@ -52,7 +45,6 @@ body {
   min-height: 40px;
 }
 
-/* Precios */
 .price-box {
   display: flex;
   align-items: center;
@@ -78,7 +70,6 @@ body {
   font-size: 12px;
 }
 
-/* Botón oferta */
 .deal-btn {
   display: block;
   background: #007bff;
@@ -96,7 +87,6 @@ body {
   background: #0056b3;
 }
 
-/* Paginación */
 .pagination {
   display: flex;
   justify-content: center;
@@ -171,7 +161,7 @@ body {
 }
 
 .deal-card {
-  position: relative; /* para posicionar el botón */
+  position: relative;
 }
 .filter-select:focus {
   border-color: #007bff;
@@ -257,7 +247,6 @@ body {
   background: #d93636;
 }
 
-/* Animaciones */
 @keyframes fadein {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 0.95; }
